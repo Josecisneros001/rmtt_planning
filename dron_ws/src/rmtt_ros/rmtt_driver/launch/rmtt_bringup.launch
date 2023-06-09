@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name = "drone_name" default="$(optenv RMTT_NAMESPACE /)" />
+    <group ns="$(arg drone_name)">
+        <node pkg="rmtt_driver" name="rmtt_driver" type="rmtt_driver.py" output="screen" />
+    </group>
+</launch>
