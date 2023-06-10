@@ -12,7 +12,7 @@ from tf.transformations import quaternion_from_euler
 import cv2
 from sensor_msgs.msg import Range, Imu
 from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CameraInfo
 
 
 class RMTTDriver(object):
@@ -60,6 +60,8 @@ class RMTTDriver(object):
         self.pubImuAngle = rospy.Publisher('imu_angle', Float32, queue_size=5)
         self.pubBattery = rospy.Publisher('battery', Float32, queue_size=10)
         self.pubFrontCam = rospy.Publisher('front_cam/image_raw', Image, queue_size=10)
+        self.pubFrontCamInfo = rospy.Publisher('front_cam/camera_info', CameraInfo, queue_size=10)
+
 
 
         # Subscribers
@@ -132,7 +134,26 @@ class RMTTDriver(object):
         try:
             img = self.drone.camera.read_cv2_image()
             image_message = self.bridge.cv2_to_imgmsg(img, "bgr8")
+            image_message.header.frame_id = "camera_link"
+            image_message.header.stamp = rospy.Time.now()
             self.pubFrontCam.publish(image_message)
+
+            # Publish camera info
+            self.camera_info = CameraInfo()
+
+            self.camera_info = CameraInfo()
+            self.camera_info.header.frame_id = "camera_link"
+            self.camera_info.header.stamp = rospy.Time.now()
+            self.camera_info.height = 720
+            self.camera_info.width = 960
+            self.camera_info.distortion_model = "plumb_bob"
+            self.camera_info.D = [-0.016272, 0.093492, 0.000093, 0.002999, 0.000000]
+            self.camera_info.K = [929.562627, 0.000000, 487.474037, 0.000000, 928.604856, 363.165223, 0.000000, 0.000000, 1.000000]
+            self.camera_info.R = [1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000]
+            self.camera_info.P = [937.878723, 0.000000, 489.753885, 0.000000, 0.000000, 939.156738, 363.172139, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]
+            self.camera_info.binning_x = 0
+            self.camera_info.binning_y = 0
+            self.pubFrontCamInfo.publish(self.camera_info)
         except:
             pass
 
