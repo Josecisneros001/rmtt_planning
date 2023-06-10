@@ -1,3 +1,6 @@
 [submodule "dron_ws/MiDaS"]
-	path = dron_ws/src/MiDaS/MiDaS
+	path = dron_ws/src/depth_estimation/MiDaS
 	url = https://github.com/isl-org/MiDaS
+[submodule "dron_ws/src/nav/orb_slam_2_ros"]
+	path = dron_ws/src/nav/orb_slam_2_ros
+	url = https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
