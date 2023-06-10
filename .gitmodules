@@ -1,0 +1,3 @@
+[submodule "dron_ws/MiDaS"]
+	path = dron_ws/MiDaS
+	url = https://github.com/isl-org/MiDaS
