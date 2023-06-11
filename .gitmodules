@@ -2,5 +2,14 @@
 	path = dron_ws/src/depth_estimation/MiDaS
 	url = https://github.com/isl-org/MiDaS
 [submodule "dron_ws/src/nav/orb_slam_2_ros"]
-	path = dron_ws/src/nav/orb_slam_2_ros
+	path = dron_ws/src/navigation/orb_slam2_ros
 	url = https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
+[submodule "dron_ws/src/navigation/orb_slam3_ros_wrapper"]
+	path = dron_ws/src/navigation/orb_slam3_ros_wrapper
+	url = https://github.com/thien94/orb_slam3_ros_wrapper.git
+[submodule "dron_ws/lib/ORB_SLAM3"]
+	path = dron_ws/lib/ORB_SLAM3
+	url = https://github.com/thien94/ORB_SLAM3.git
+[submodule "dron_ws/lib/Pangolin"]
+	path = dron_ws/lib/Pangolin
+	url = https://github.com/stevenlovegrove/Pangolin.git
