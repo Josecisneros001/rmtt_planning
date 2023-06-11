@@ -71,7 +71,7 @@ class RMTTDriver(object):
         rospy.Subscriber("cmd_vel", Twist, self.callBackCmdVel)
         rospy.Subscriber("rgb_led", ColorRGBA, self.callBackRGBLed)
 
-    def callBackShutdown(self):
+    def callBackShutdown(self, msg):
         self.shutdown()
         self.shutdown_flag = True
 
