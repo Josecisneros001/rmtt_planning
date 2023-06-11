@@ -19,11 +19,11 @@ import time
 
 import sys
 filepath = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(filepath+"/../MiDaS/")
+sys.path.append(filepath + "/../MiDaS/")
 import utils
 from midas.model_loader import default_models, load_model
 
-VERBOSE = False
+VERBOSE = True
 
 class Midas:
     def __init__(self):
@@ -118,15 +118,18 @@ class Midas:
                     print(f"\rFPS: {round(fps,2)}", end="")
 
                     try:
-                        # Current depth image is in 32FC3
-                        # Convert to 16UC1
-                        # depth_image = np.uint16(prediction*1000)
                         if grayscale:
-                            depth_image = np.uint8(prediction*255)
-                            depth_image = cv2.cvtColor(depth_image, cv2.COLOR_GRAY2RGB)
+                            # 32FC3 to  32FC1
+                            content = cv2.cvtColor(content/255, cv2.COLOR_BGR2GRAY)
+                            msg = self.bridge.cv2_to_imgmsg(content, encoding="passthrough")
+                            msg.header.stamp = rospy.Time.now()
+                            msg.header.frame_id = "camera_link"
+                            self.image_pub.publish(msg)
                         else:
-                            depth_image = self.bridge.cv2_to_imgmsg(depth_image, encoding="rgb8")
-                        self.image_pub.publish(depth_image)
+                            msg = self.bridge.cv2_to_imgmsg(content, encoding="rgb8")
+                            msg.header.stamp = rospy.Time.now()
+                            msg.header.frame_id = "camera_link"
+                            self.image_pub.publish(msg)
 
                     except CvBridgeError as e:
                         print(e)

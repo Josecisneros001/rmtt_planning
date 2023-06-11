@@ -3,7 +3,7 @@
     <arg name="output_topic" default="/front_cam/image_depth"/>
     <arg name="model_name" default="dpt_swin2_large_384"/>
 
-    <node pkg="midas" type="main.py" name="main" output="log" respawn="true">
+    <node pkg="depth_estimation" type="main.py" name="main" output="log" respawn="true">
         <param name="input_topic" value="$(arg input_topic)"/>
         <param name="output_topic" value="$(arg output_topic)"/>
         <param name="model_name" value="$(arg model_name)"/>
