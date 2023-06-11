@@ -1,0 +1,4 @@
+<launch>
+  <!-- rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 1 map base_footprint -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher_map_base_footprint" args="0 0 0 0 0 0 1 map base_footprint" />
+</launch>

@@ -1,0 +1,4 @@
+<launch>
+	<node name="obstacle_detector" pkg="nav_main" type="obstacle_detector.py" output="screen" />
+	<node name="depth_estimation" pkg="depth_estimation" type="main.py" output="screen" />
+</launch>

@@ -1,0 +1,22 @@
+<launch>
+	<!-- TO-DO: Merge current Odom with IMU and attitude information -->
+	
+	<!-- Map Server -->
+	<arg name="map_file" default="$(find nav_main)/maps/RoBorregosLab.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+	<rosparam file="$(arg map_file)" command="load" ns="map" />
+
+	<!-- MoveBase -->
+	<include file="$(find nav_main)/launch/move_base.launch">
+		<arg name="base_local_planner" value="teb"/>
+	</include>
+
+	<!-- Odom Publisher -->
+	<node pkg="nav_main" type="odom_publisher.py" name="odom_publisher" output="screen" />
+
+	<!-- Robot Pose Publisher -->
+	<!-- <arg name="base_frame" default="base_footprint"/> 
+	<node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" >
+		<arg name="base_frame" value="$(base_frame)"/>
+	</node> -->
+</launch>
