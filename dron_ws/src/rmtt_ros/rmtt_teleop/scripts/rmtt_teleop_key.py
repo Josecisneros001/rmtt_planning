@@ -164,8 +164,8 @@ if __name__=="__main__":
     rospy.init_node('teleop_twist_keyboard')
     land_pub = rospy.Publisher('land', Empty, queue_size=1)
     takeoff_pub = rospy.Publisher('takeoff', Empty, queue_size=1)
-    speed = rospy.get_param("~speed", 0.2)
-    turn = rospy.get_param("~turn", 0.2)
+    speed = rospy.get_param("~speed", 0.5)
+    turn = rospy.get_param("~turn", 0.5)
     repeat = rospy.get_param("~repeat_rate", 0.0)
     key_timeout = rospy.get_param("~key_timeout", 0.0)
     if key_timeout == 0.0:

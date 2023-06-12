@@ -149,8 +149,7 @@ class RMTTDriver(object):
             self.camera_info = CameraInfo()
 
             self.camera_info = CameraInfo()
-            self.camera_info.header.frame_id = "camera_link"
-            self.camera_info.header.stamp = rospy.Time.now()
+            self.camera_info.header = image_message.header
             self.camera_info.height = 720
             self.camera_info.width = 960
             self.camera_info.distortion_model = "plumb_bob"

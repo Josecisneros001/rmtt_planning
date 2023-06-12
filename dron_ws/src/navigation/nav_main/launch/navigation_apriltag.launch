@@ -1,0 +1,24 @@
+<launch>
+	<!-- Map Server -->
+	<arg name="map_file" default="$(find nav_main)/maps/dinningRoom.yaml"/>
+	<!-- <arg name="map_file" default="$(find nav_main)/maps/map.yaml"/> -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+	<rosparam file="$(arg map_file)" command="load" ns="map" />
+
+	<!-- MoveBase -->
+	<include file="$(find nav_main)/launch/move_base.launch">
+		<arg name="base_local_planner" value="teb"/>
+	</include>
+
+	<!-- Odom Publisher -->
+	<node pkg="nav_main" type="odom_publisher.py" name="odom_publisher" output="screen" />
+
+	<!-- Map Broadcaster -->
+	<node pkg="nav_main" type="map_broadcaster.py" name="map_broadcaster" output="screen" />
+
+	<include file="$(find rmtt_description)/launch/display.launch" />
+
+	<!-- Localization -->
+	<include file="$(find localization)/launch/apriltag.launch" />
+	<node pkg="localization" type="pose_publisher.py" name="pose_publisher" output="screen" />
+</launch>
