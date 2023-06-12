@@ -3,10 +3,11 @@
 <launch>
     <!-- Load the urdf into the parameter server. -->
     <arg name = "drone_name" default="$(optenv RMTT_NAMESPACE /)" />
+    <!-- Rviz File -->
+    <arg name="rviz_file" default="-d $(find rmtt_description)/rviz/urdf.rviz" />
     <group ns="$(arg drone_name)">
         <param name="robot_description" command="xacro $(find rmtt_description)/urdf/tello_talent.xacro prefix:=$(arg drone_name)"/>
         <node pkg="robot_state_publisher" type="robot_state_publisher" name="rmtt_description" />
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rmtt_description)/rviz/urdf.rviz" />
-        
+        <node name="rviz" pkg="rviz" type="rviz" args="$(arg rviz_file)" />
     </group>
 </launch>

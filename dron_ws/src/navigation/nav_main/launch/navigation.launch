@@ -1,8 +1,7 @@
 <launch>
-	<!-- TO-DO: Merge current Odom with IMU and attitude information -->
-	
 	<!-- Map Server -->
 	<arg name="map_file" default="$(find nav_main)/maps/RoBorregosLab.yaml"/>
+	<!-- <arg name="map_file" default="$(find nav_main)/maps/map.yaml"/> -->
 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 	<rosparam file="$(arg map_file)" command="load" ns="map" />
 
@@ -14,9 +13,16 @@
 	<!-- Odom Publisher -->
 	<node pkg="nav_main" type="odom_publisher.py" name="odom_publisher" output="screen" />
 
-	<!-- Robot Pose Publisher -->
-	<!-- <arg name="base_frame" default="base_footprint"/> 
-	<node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" >
-		<arg name="base_frame" value="$(base_frame)"/>
-	</node> -->
+	<!-- Map Broadcaster -->
+	<node pkg="nav_main" type="map_broadcaster.py" name="map_broadcaster" output="screen" />
+
+
+	<!-- ORB SLAM2  -->
+	<include file="$(find orb_slam2_ros)/ros/launch/orb_slam2_tt_mono.launch" />
+
+
+	<!-- Depth Estimation -->
+	<include file="$(find depth_estimation)/launch/midas.launch" />
+	<node pkg="nav_main" type="obstacle_detector.py" name="obstacle_detector" output="screen" />
+
 </launch>

@@ -14,13 +14,14 @@ def publish_odometry():
 
     while not rospy.is_shutdown():
         try:
-            # Get the transform from map to base_footprint
-            transform = tf_buffer.lookup_transform("map", "base_footprint", rospy.Time(0), rospy.Duration(1.0))
+            # Get the transform from odom to base_footprint
+            # Change to base_link if needed
+            transform = tf_buffer.lookup_transform("odom", "base_footprint", rospy.Time(0), rospy.Duration(1.0))
 
             # Create and populate the odometry message
             odom = Odometry()
             odom.header.stamp = rospy.Time.now()
-            odom.header.frame_id = "map"
+            odom.header.frame_id = "odom"
             odom.child_frame_id = "base_footprint"
 
             # Set the position from the transform
