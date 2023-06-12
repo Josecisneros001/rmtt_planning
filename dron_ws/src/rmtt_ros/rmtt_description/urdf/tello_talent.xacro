@@ -22,6 +22,15 @@
         <color rgba="1.0 0 0 1.0"/>
     </material>
     <!-- TODO add Gazebo color information -->
+    
+    <!-- Base Footprint -->
+    <link name="${tf_prefix}base_footprint"/>
+    <joint name="base_footprint_joint" type="fixed">
+        <!-- <origin xyz="0 0 0" rpy="${-pi} ${-pi*90/180} ${-pi*90/180}"/> -->
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${tf_prefix}base_footprint"/>
+        <child link="${tf_prefix}base_link"/>
+    </joint>
 
     <!-- Base link -->
     <link name="${tf_prefix}base_link">
@@ -91,7 +100,7 @@
 
     <!-- Fixed joint -->
     <joint name="camera_joint" type="fixed">
-        <origin xyz="0.035 0 0" rpy="${-pi*105/180} 0 ${-pi*90/180}"/>  <!-- TODO fix origin -->
+        <origin xyz="0.035 0 0" rpy="${-pi*90/180} 0 ${-pi*90/180}"/>  <!-- TODO fix origin -->
         <parent link="${tf_prefix}base_link"/>
         <child link="${tf_prefix}camera_link"/>
     </joint>
