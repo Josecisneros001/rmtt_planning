@@ -13,3 +13,9 @@
 [submodule "dron_ws/lib/Pangolin"]
 	path = dron_ws/lib/Pangolin
 	url = https://github.com/stevenlovegrove/Pangolin.git
+[submodule "dron_ws/src/navigation/apriltag_ros"]
+	path = dron_ws/src/navigation/apriltag_ros
+	url = https://github.com/AprilRobotics/apriltag_ros.git
+[submodule "dron_ws/lib/apriltag"]
+	path = dron_ws/lib/apriltag
+	url = https://github.com/AprilRobotics/apriltag.git
