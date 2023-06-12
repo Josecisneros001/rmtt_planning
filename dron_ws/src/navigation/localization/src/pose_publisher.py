@@ -54,10 +54,18 @@ class RobotPosePublisher:
 
         self.last_pose = create_pose_stamped(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 'map').pose
 
+        # Define the AprilTag poses in the map frame [My Dinning Room]
         self.apriltag_poses = [
           create_pose_stamped(0.0, 0.59, 1.32, 0.0, 0.0, 0.0, 1.0, 'map'),  # 0  
           create_pose_stamped(0.0, 1.1, 0.61, 0.0, 0.0, 0.0, 1.0, 'map'),  # 1
         ]
+
+        # Define the AprilTag poses in the map frame [Dr. Herman's Lab]
+        self.apriltag_poses = [
+          create_pose_stamped(0.0, 0.8, 1.1, 0.0, 0.0, 0.0, 1.0, 'map'),  # 0  
+          create_pose_stamped(0.0, 1.1, 0.65, 0.0, 0.0, 0.0, 1.0, 'map'),  # 1
+        ]
+
 
         rospy.loginfo('Robot pose publisher initialized')
         rospy.spin()

@@ -5,6 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /Camera1
+        - /Camera2
       Splitter Ratio: 0.5
     Tree Height: 258
   - Class: rviz/Selection
@@ -24,7 +26,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: Camera
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -159,7 +161,12 @@ Visualization Manager:
       Tree:
         map:
           odom:
-            {}
+            base_footprint:
+              base_link:
+                camera_link:
+                  {}
+                imu_link:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -216,26 +223,26 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /move_base/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Class: rviz/Camera
       Enabled: false
       Image Rendering: background and overlay
-      Image Topic: /front_cam/image_depth
+      Image Topic: /orb_slam2_mono/debug_image
       Name: Camera
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -257,7 +264,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -289,17 +296,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 2.4390759468078613
-        Y: 0.7843218445777893
-        Z: 1.0506515502929688
+        X: 0.36941567063331604
+        Y: 0.5223398208618164
+        Z: 1.0489983558654785
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5497963428497314
+      Pitch: 1.304795742034912
       Target Frame: <Fixed Frame>
-      Yaw: 6.273582458496094
+      Yaw: 3.0303914546966553
     Saved: ~
 Window Geometry:
   Camera:

@@ -51,10 +51,16 @@ def create_pgm_map(polygon_points, resolution, output_file):
 
 
 # Define the inputs
-# polygon_points = [(0, 5), (3.2, 5), (3.2, 0.83), (1.1, 0.83), (1.1, 0), (0, 0)]
+# My Room
 polygon_points = [(5, 0), (5, 3.2), (0.83, 3.2), (0.83, 1.1), (0, 1.1), (0, 0)]
+# My Dinning Room 
+# Rectangle 4.6m x 3.1m
+polygon_points = [(0, 0), (0, 3.1), (4.6, 3.1), (4.6, 0)]
+# Dr. Herman's Lab
+# Triangle 8.05m x 10m x 12.83m
+polygon_points = [(10, 0), (0, -8.05), (0, 0)]
 resolution = 0.05
-output_file = 'map.pgm'
+output_file = 'DrHermanLab.pgm'
 
 # Generate the map files
 create_pgm_map(polygon_points, resolution, output_file)

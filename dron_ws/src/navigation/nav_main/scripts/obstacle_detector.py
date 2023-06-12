@@ -49,7 +49,7 @@ def image_callback(msg):
     # Calculate the median value
     median_value = np.median(flattened_window)
 
-    if median_value > 0.8 and range_value > 0.3:
+    if median_value > 0.62 and range_value > 0.3:
         rospy.loginfo("Obstacle detected!")
         publishLidar(True)
     else:

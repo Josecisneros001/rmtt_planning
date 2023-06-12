@@ -100,8 +100,10 @@
 
     <!-- Fixed joint -->
     <joint name="camera_joint" type="fixed">
+        <!-- AprilTag -->
         <origin xyz="0.035 0 0" rpy="${-pi*105/180} ${pi} ${-pi*90/180}"/>
-        <!-- <origin xyz="0.035 0 0" rpy="${-pi*160/180} 0 0"/> -->
+        <!-- OrbSlam -->
+        <!-- <origin xyz="0.035 0 0" rpy="${-pi*90/180} 0 ${-pi*90/180}"/> -->
         <parent link="${tf_prefix}base_link"/>
         <child link="${tf_prefix}camera_link"/>
     </joint>
