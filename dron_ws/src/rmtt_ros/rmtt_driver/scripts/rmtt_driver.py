@@ -18,9 +18,15 @@ from sensor_msgs.msg import Image, CameraInfo
 class RMTTDriver(object):
     IP_ADDRESS_STR = "192.168.10.2"
     ROBOT_ADDRESS_STR = "192.168.10.1"
-    V_XY_MAX = 40
-    V_Z_MAX = 60
-    V_YAW_RATE_MAX = 50
+
+    V_XY_MAX = 3.0
+    V_Z_MAX = 3.0
+    V_YAW_RATE_MAX = 3.0
+
+    V_XY_SAFETY = 1.2
+    V_Z_SAFETY = 1.8
+    V_YAW_RATE_SAFETY = 1.5
+
     ACTIVE_FRONT_CAM = True
     FRONT_CAM_FREQ = 50.0
 
@@ -111,18 +117,19 @@ class RMTTDriver(object):
             self.drone.led.set_led(r=0, g=0, b=0)    
         
     def callBackCmdVel(self, data):
-        # cmdvel linear(x,y,z)  angular(z)  all assumed to be in [-1,1]
+        def map(x, in_min, in_max, out_min, out_max):
+            return np.rint((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+
         # roll, pitch, accelerate, yaw:  a,b,c,d [-100,100]
-        vx = np.rint(100*np.clip(data.linear.x, -1.0, 1.0))
-        vy = np.rint(100*np.clip(data.linear.y, -1.0, 1.0))
-        vz = np.rint(100*np.clip(data.linear.z, -1.0, 1.0))
-        v_yaw_rate = np.rint(100*np.clip(data.angular.z, -1.0, 1.0))
+        vx = map(data.linear.x, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0)
+        vy = map(data.linear.y, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0)
+        vz = map(data.linear.z, -RMTTDriver.V_Z_MAX, RMTTDriver.V_Z_MAX, -100.0, 100.0)
+        v_yaw_rate = map(data.angular.z, -RMTTDriver.V_YAW_RATE_MAX, RMTTDriver.V_YAW_RATE_MAX, -100.0, 100.0)
         
         # Saturate for safety.
-        vx = np.clip(vx, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX)
-        vy = np.clip(vy, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX)
-        vz = np.clip(vz, -RMTTDriver.V_Z_MAX, RMTTDriver.V_Z_MAX)
-        v_yaw_rate = np.clip(v_yaw_rate, -RMTTDriver.V_YAW_RATE_MAX, RMTTDriver.V_YAW_RATE_MAX)
+        vx = np.clip(vx, map(-RMTTDriver.V_XY_SAFETY, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0), map(RMTTDriver.V_XY_SAFETY, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0))
+        vy = np.clip(vy, map(-RMTTDriver.V_XY_SAFETY, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0), map(RMTTDriver.V_XY_SAFETY, -RMTTDriver.V_XY_MAX, RMTTDriver.V_XY_MAX, -100.0, 100.0))
+        vz = np.clip(vz, map(-RMTTDriver.V_Z_SAFETY, -RMTTDriver.V_Z_MAX, RMTTDriver.V_Z_MAX, -100.0, 100.0), map(RMTTDriver.V_Z_SAFETY, -RMTTDriver.V_Z_MAX, RMTTDriver.V_Z_MAX, -100.0, 100.0)) 
         
         if (self.drone_state=="FLYING"):
             self.drone.flight.rc(a=-vy, b=vx, c=vz, d=-v_yaw_rate)
