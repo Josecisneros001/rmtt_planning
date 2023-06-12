@@ -4,6 +4,7 @@ import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import numpy as np
+from std_msgs.msg import Float32
 from costmap_converter.msg import ObstacleArrayMsg, ObstacleMsg
 from geometry_msgs.msg import Point
 import time
@@ -12,6 +13,11 @@ import numpy as np
 import math
 
 obstacle_pub = None
+range_value = 0.0
+
+def range_callback(msg):
+    global range_value
+    range_value = msg.data
 
 def image_callback(msg):
     # Convert ROS Image message to OpenCV image
@@ -43,20 +49,26 @@ def image_callback(msg):
     # Calculate the median value
     median_value = np.median(flattened_window)
 
-    if median_value > 0.6:
+    if median_value > 0.8 and range_value > 0.3:
         rospy.loginfo("Obstacle detected!")
-        publishObstacle()
+        publishLidar(True)
     else:
         rospy.loginfo("Obstacle not detected.")
+        publishLidar(False)
         
     # Print the median value of the center pixel
     rospy.loginfo("Median value of the center pixel: {}".format(median_value))
 
-def publishObstacle():
+def publishLidar(obstacle_detected):
     laser_scan_msg = LaserScan()
     
-    start_angle = -0.35
-    end_angle = 0.35
+    if obstacle_detected:
+        start_angle = -0.13
+        end_angle = 0.13
+    else:
+        start_angle = 0.0
+        end_angle = 0.0
+
     # Set the necessary fields of the LaserScan message
     laser_scan_msg.header.stamp = rospy.Time.now()
     laser_scan_msg.header.frame_id = "base_link"
@@ -87,11 +99,10 @@ def listener():
     global obstacle_pub
     rospy.init_node('depth_image_listener', anonymous=True)
     obstacle_pub = rospy.Publisher("/scan", LaserScan, queue_size=1)
+
+    rospy.Subscriber("/btm_range", Float32, range_callback)
     rospy.Subscriber("/front_cam/image_depth", Image, image_callback)
 
-    while not rospy.is_shutdown():
-        publishObstacle()
-        time.sleep(2)
     rospy.spin()
 
 if __name__ == '__main__':
